@@ -17,33 +17,40 @@ const defaults = {
   ]
 };
 
-function templatePaths(sprite, iconIds) {
-  const elements = iconIds.map(
-    iconId => `<g id="${iconId}">${sprite.getPathFor(iconId).toString()}</g>`
-  );
+function templateSymbols(sprite, options) {
+  const elements = options.icons.map(icon => {
+    const dimensions = sprite.getIconSize(icon);
+
+    return `
+      <symbol
+        id="${icon}"
+        width="${options.size}"
+        height="${options.size}"
+        viewBox="0 0 ${dimensions.width} ${dimensions.height}">
+        ${sprite.getPathFor(icon).toString()}
+      </symbol>`;
+  });
 
   return elements.join('\n');
 }
 
-function templateColors(sprite, iconIds, colors) {
-  const elements = colors.map(
-    (color, colorIndex) => `<g fill="#${color}">${templateLinks(sprite, iconIds, colorIndex)}</g>`
-  );
+function templateColorGroups(sprite, options) {
+  const elements = options.colors.map((color, colorIndex) => `
+    <g fill="#${color}">
+      ${templateLinks(sprite, options, colorIndex)}
+    </g>
+  `);
 
   return elements.join('\n');
 }
 
-function templateLinks(sprite, iconIds, colorIndex) {
-  const dimensions = sprite.getIconSize();
+function templateLinks(sprite, options, colorIndex) {
+  const elements = options.icons.map((icon, iconIndex) => {
+    const x = options.size * iconIndex;
+    const y = options.size * colorIndex;
 
-  const elements = iconIds.map(
-    (iconId, iconIndex) => {
-      const x = dimensions.width * iconIndex;
-      const y = dimensions.height * colorIndex;
-
-      return `<use xlink:href="#${iconId}" transform="translate(${x} ${y})"></use>`;
-    }
-  );
+    return `<use xlink:href="#${icon}" x="${x}" y="${y}"></use>`;
+  });
 
   return elements.join('\n');
 }
@@ -55,14 +62,14 @@ module.exports = class GenerateSprite {
   }
 
   withParams(params) {
-    const dimensions = this.sprite.getIconSize();
     const options = {
       colors: params.colors ? params.colors.split(',') : defaults.colors,
-      icons: params.icons ? params.icons.split(',') : defaults.icons
+      icons: params.icons ? params.icons.split(',') : defaults.icons,
+      size: params.size ? parseInt(params.size, 10) : 50
     };
 
-    const width = dimensions.width * options.icons.length;
-    const height = dimensions.height * options.colors.length;
+    const width = options.size * options.icons.length;
+    const height = options.size * options.colors.length;
 
     return `
       <svg
@@ -74,9 +81,9 @@ module.exports = class GenerateSprite {
         viewBox="0 0 ${width} ${height}"
         preserveAspectRatio="none">
         <defs>
-        ${templatePaths(this.sprite, options.icons)}
+        ${templateSymbols(this.sprite, options)}
         </defs>
-        ${templateColors(this.sprite, options.icons, options.colors)}
+        ${templateColorGroups(this.sprite, options)}
       </svg>
     `;
   }

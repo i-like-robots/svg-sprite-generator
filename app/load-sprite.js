@@ -18,8 +18,8 @@ module.exports = class LoadSprite {
     return this.$(`svg#${id}`);
   }
 
-  getIconSize() {
-    const $icon = this.getIcons().eq(0);
+  getIconSize(id) {
+    const $icon = this.getIconById(id);
     return { width: $icon.attr('width'), height: $icon.attr('height') };
   }
 
