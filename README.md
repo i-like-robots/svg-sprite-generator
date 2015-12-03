@@ -43,9 +43,9 @@ http://localhost:3000/colors
 # To view available icons
 http://localhost:3000/icons
 
-# To fetch all icons and colors
+# To fetch all icons and default colors
 http://localhost:3000/
 
-# To fetch specific icons and custom colors
+# To fetch specific icons and specified colors
 http://localhost:3000/?colors=000,666,fff&icons=arrow-left,arrow-right,arrow-up,arrow-down
 ```

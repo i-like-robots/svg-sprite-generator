@@ -47,8 +47,8 @@ function templateColorGroups(sprite, options) {
 
 function templateLinks(sprite, options, color, colorIndex) {
 	const elements = options.icons.map((icon, iconIndex) => {
-		const x = options.size * iconIndex;
-		const y = options.size * colorIndex;
+		const x = options.size * colorIndex;
+		const y = options.size * iconIndex;
 
 		return `<use xlink:href="#${icon}" x="${x}" y="${y}" fill="#${color}"></use>`;
 	});
@@ -74,8 +74,8 @@ module.exports = class GenerateSprite {
 			size: params.size ? parseInt(params.size, 10) : this.defaults.size
 		};
 
-		const width = options.size * options.icons.length;
-		const height = options.size * options.colors.length;
+		const width = options.size * options.colors.length;
+		const height = options.size * options.icons.length;
 
 		return `
 			<svg
