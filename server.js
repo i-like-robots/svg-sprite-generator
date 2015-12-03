@@ -3,6 +3,7 @@
 const express = require('express');
 const LoadSprite = require('./app/load-sprite');
 const GenerateSprite = require('./app/generate-sprite');
+const pngConversion = require('./app/png-conversion');
 
 let app = express();
 let sprite = new LoadSprite();
@@ -14,8 +15,15 @@ app.get('/', function (request, response) {
 	try {
 		const svg = generate.withParams(request.query);
 
-		response.set('Content-Type', 'image/svg+xml');
-		response.send(svg);
+		if (request.query.format && request.query.format === 'png') {
+			pngConversion(svg).then(output => {
+				response.set('Content-Type', 'image/png');
+				response.end(output, 'binary');
+			});
+		} else {
+			response.set('Content-Type', 'image/svg+xml');
+			response.send(svg);
+		}
 	} catch(e) {
 		console.error(e.toString());
 		response.status(500).send(e.toString());

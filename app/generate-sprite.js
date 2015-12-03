@@ -25,34 +25,32 @@ function templateSymbols(sprite, options) {
 		const dimensions = sprite.getIconSize(icon);
 
 		return `
-			<symbol
+			<svg
 				id="${icon}"
 				width="${options.size}"
 				height="${options.size}"
 				viewBox="0 0 ${dimensions.width} ${dimensions.height}">
 				${sprite.getPathFor(icon).toString()}
-			</symbol>`;
+			</svg>`;
 	});
 
 	return elements.join('\n');
 }
 
 function templateColorGroups(sprite, options) {
-	const elements = options.colors.map((color, colorIndex) => `
-		<g fill="#${color}">
-			${templateLinks(sprite, options, colorIndex)}
-		</g>
-	`);
+	const elements = options.colors.map(
+		(color, colorIndex) => templateLinks(sprite, options, color, colorIndex)
+	);
 
 	return elements.join('\n');
 }
 
-function templateLinks(sprite, options, colorIndex) {
+function templateLinks(sprite, options, color, colorIndex) {
 	const elements = options.icons.map((icon, iconIndex) => {
 		const x = options.size * iconIndex;
 		const y = options.size * colorIndex;
 
-		return `<use xlink:href="#${icon}" x="${x}" y="${y}"></use>`;
+		return `<use xlink:href="#${icon}" x="${x}" y="${y}" fill="#${color}"></use>`;
 	});
 
 	return elements.join('\n');

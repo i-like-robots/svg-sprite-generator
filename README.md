@@ -5,9 +5,18 @@ A experimental SVG sprite generation service prototype.
 ## Setup
 
 ```sh
+# Clone this repo
 git clone git@github.com:i-like-robots/svg-sprite-generator.git
 cd svg-sprite-generator/
+
+# Install project dependencies
 npm install
+
+# For SVG -> PNG conversion use ImageMagick + librsvg
+brew install imagemagick --with-librsvg
+
+# or if you have ImageMagick installed already but not librsvg...
+brew reinstall imagemagick --with-librsvg
 ```
 
 ### Prepare SVGs
@@ -28,5 +37,15 @@ npm start
 ## Usage
 
 ```
-curl http://localhost:3000/?colors=000,f00,00f,0f0,666&icons=arrow-left,arrow-right,arrow-up,arrow-down
+# To view available colors
+http://localhost:3000/colors
+
+# To view available icons
+http://localhost:3000/icons
+
+# To fetch all icons and colors
+http://localhost:3000/
+
+# To fetch specific icons and custom colors
+http://localhost:3000/?colors=000,666,fff&icons=arrow-left,arrow-right,arrow-up,arrow-down
 ```
