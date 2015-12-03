@@ -23,6 +23,13 @@ app.get('/', function (request, response) {
 
 });
 
+app.get('/icons', function (request, response) {
+	response.json(generate.defaults.icons);
+});
+
+app.get('/colors', function (request, response) {
+	response.json(generate.defaults.colors);
+});
 
 const port = process.env.port || 3000;
 app.listen(port);

@@ -1,27 +1,24 @@
 'use strict';
 
-const defaults = {
-	colors: [
-		'fff1e0',
-		'000000',
-		'ffffff',
-		'2e6e9e',
-		'275e86',
-		'9e2f50',
-		'd66d06',
-		'b0b0b0',
-		'999999',
-		'777777',
-		'505050',
-		'333333',
-		'f6e9d8',
-		'e9decf',
-		'cec6b9',
-		'a7a59b',
-		'74736c'
-	],
-	icons: []
-};
+const colors = [
+	'fff1e0',
+	'000000',
+	'ffffff',
+	'2e6e9e',
+	'275e86',
+	'9e2f50',
+	'd66d06',
+	'b0b0b0',
+	'999999',
+	'777777',
+	'505050',
+	'333333',
+	'f6e9d8',
+	'e9decf',
+	'cec6b9',
+	'a7a59b',
+	'74736c'
+];
 
 function templateSymbols(sprite, options) {
 	const elements = options.icons.map(icon => {
@@ -65,14 +62,18 @@ module.exports = class GenerateSprite {
 
 	constructor(sprite) {
 		this.sprite = sprite;
-		defaults.icons = this.sprite.getIconIds();
+		this.defaults = {
+			icons: this.sprite.getIconIds(),
+			colors: colors,
+			size: 50
+		};
 	}
 
 	withParams(params) {
 		const options = {
-			colors: params.colors ? params.colors.split(',') : defaults.colors,
-			icons: params.icons ? params.icons.split(',') : defaults.icons,
-			size: params.size ? parseInt(params.size, 10) : 50
+			colors: params.colors ? params.colors.split(',') : this.defaults.colors,
+			icons: params.icons ? params.icons.split(',') : this.defaults.icons,
+			size: params.size ? parseInt(params.size, 10) : this.defaults.size
 		};
 
 		const width = options.size * options.icons.length;
