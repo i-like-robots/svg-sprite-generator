@@ -18,7 +18,7 @@ app.get('/', function (request, response) {
 		response.send(svg);
 	} catch(e) {
 		console.error(e.toString());
-		response.sendStatus(500);
+		response.status(500).send(e.toString());
 	}
 
 });
